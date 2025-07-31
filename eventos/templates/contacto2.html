@@ -1,0 +1,79 @@
+{% extends "layout/base.html" %}
+{% block content %}
+
+{% include "components/_alert.html" %}
+    <div class="card shadow-lg w-75 mx-auto mt-2">
+        <div class="card-header">
+            <h3 class="text-center" style="color: #007bff;">Formulario de Contacto 2</h3>
+        </div>      
+        <div class="card-body" x-data="formularioContacto()" x-init="$nextTick(() => $refs.nombre.focus())">
+
+            <form method="post" action="{% url 'contacto2' %}" 
+            @submit.prevent="!validar() || $el.submit()">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" 
+                    class="form-control is-invalid"
+                    id="nombre" name="nombre"  
+                    x-ref="nombre"
+                    placeholder="Ingrese su nombre completo" 
+                    x-model="nombre"
+                    x-bind:class="{ 'is-invalid': error }">
+                    <p x-text="nombre"></p>
+                    <div id="validationServer03Feedback" class="invalid-feedback" x-show="error">
+                        Por favor, ingrese su nombre.
+                    </div>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control is-invalid" id="email" 
+                    name="email"  placeholder="correo@ejemplo.com"
+                    x-model="email"
+                    x-bind:class="{ 'is-invalid': error }">
+                    <p x-text="email"></p>
+                    <div id="validationServer03Feedback" class="invalid-feedback" x-show="error">
+                        Por favor, ingrese un correo electrónico válido.
+                    </div>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="mensaje" class="form-label">Mensaje</label>
+                    <textarea class="form-control is-invalid" id="mensaje" name="mensaje" rows="4"  placeholder="Ingrese su mensaje aquí..."
+                    x-model="mensaje"
+                    x-bind:class="{ 'is-invalid': error }"></textarea>
+                    <p x-text="mensaje"></p>
+                    <div id="validationServer03Feedback" class="invalid-feedback" x-show="error">
+                        Por favor, ingrese su mensaje.
+                    </div>
+
+                </div>
+                <!-- <button type="button" class="btn btn-secondary" @click="if(validar()) {}" >Enviar a Alpine</button> -->
+                <button type="submit" class="btn btn-primary">Enviar</button>
+                <button type="reset" class="btn btn-secondary">Cancelar</button>
+            
+            </form>
+        </div>
+    </div>
+
+
+<script>
+    function formularioContacto() {
+        return {
+            nombre: '',
+            email: '',
+            mensaje: '',
+            error: false,
+            validar() {
+                this.error = this.nombre.trim() === '';
+                return !this.error;
+            }
+        };
+    }
+
+</script>
+
+{% endblock %}

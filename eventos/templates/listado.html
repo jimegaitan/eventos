@@ -1,0 +1,51 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+   
+
+    <div class="container mt-4 mb-4 text-center">
+      <!-- <div class="row">
+        <h1>{{ title }}</h1>
+      </div> -->
+      
+      <div class="card shadow  ">
+        <div class="card-header">
+          <h2>Listado de Eventos</h2>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Nombre del evento</th>
+                <th scope="col">Fecha Inicio</th>
+                <th scope="col">Fecha Fin</th>
+                <th scope="col">Precio</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for evento in ListadoEventos %}
+              <tr>
+
+                <td class="text-start ps-5">{{ evento.nombre }}</td>
+                <td>{{ evento.fecha_inicio|date:"d/m/Y" }}</td>
+                <td>{{ evento.fecha_fin|date:"d/m/Y" }}</td>
+                <td>
+                  {% if evento.precio == 0 %}
+                    <span class="badge bg-success">{{ evento.precio }}</span> 
+                  {% else %}
+                    <span class="badge bg-warning text-dark">{{ evento.precio }}</span>
+                  {% endif %}
+                </td>  
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      
+      
+      </div>
+    </div>
+    </div>
+
+
+{% endblock %}

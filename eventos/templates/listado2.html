@@ -1,0 +1,45 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+
+    <h1>Listado de Eventos</h1>
+<div x-data="eventosHandler()" x-init="cargarEventos()">
+  <template x-if="cargando">
+    <p>Cargando eventos...</p>
+  </template>
+  <!-- <input type="search" x-model="nombre" placeholder="Buscar evento..." class="form-control mb-3"> -->
+
+  <template x-if="!cargando">
+      <ul>
+      <template x-for="evento in eventos" :key="evento.id">
+        <li x-text="evento.nombre"></li>
+      </template>
+    </ul>
+  </template>
+</div>
+
+<script>
+  function eventosHandler() {
+    return {
+      eventos: [],
+      cargando: true,
+      nombre: '',
+
+      async cargarEventos() {
+        try {
+          const respuesta = await fetch('/api/eventos/');
+          if (!respuesta.ok) throw new Error('Error al obtener los eventos');
+
+            this.eventos = await respuesta.json();
+            console.log(this.eventos);
+        } catch (error) {
+          console.error('Error en fetch:', error);
+        } finally {
+          this.cargando = false;
+        }
+      }
+    }
+  }
+</script>
+
+{% endblock %}

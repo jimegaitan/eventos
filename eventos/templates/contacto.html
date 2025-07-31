@@ -1,0 +1,49 @@
+{% extends "layout/base.html" %}
+{% block content %}
+
+{% include "components/_alert.html" %}
+    <div class="card shadow-lg w-75 mx-auto mt-2">
+        <div class="card-header">
+            <h3 class="text-center" style="color: #007bff;">Formulario de Contacto</h3>
+        </div>      
+        <div class="card-body" x-data="{ nombre: '' , 
+        error: false, 
+        validar() {
+            this.error = this.nombre.trim() === '';
+            return !this.error;
+            }
+        }">
+
+            <form method="post" action="{% url 'contacto' %}" 
+            @submit.prevent="!validar() || $el.submit() ">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" 
+                    class="form-control is-invalid"
+                    id="nombre" name="nombre"  
+                    placeholder="Ingrese su nombre completo" 
+                    x-model="nombre"
+                    x-bind:class="{ 'is-invalid': error }">
+                    <p x-text="nombre"></p>
+                    <div id="validationServer03Feedback" class="invalid-feedback" x-show="error">
+                        Por favor, ingrese su nombre.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" 
+                    name="email" required placeholder="correo@ejemplo.com">
+                </div>
+                <div class="mb-3">
+                    <label for="mensaje" class="form-label">Mensaje</label>
+                    <textarea class="form-control" id="mensaje" name="mensaje" rows="4" required placeholder="Ingrese su mensaje aquí..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar</button>
+                <button type="reset" class="btn btn-secondary">Cancelar</button>
+                <button @click="alert(nombre)">Mostrar Nombre</button>
+                <button type="button" class="btn btn-secondary" @click="if(validar()) {}" >Enviar a Alpine</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
