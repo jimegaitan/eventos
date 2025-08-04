@@ -18,6 +18,7 @@ urlpatterns = [
     path ('listado/', views.listado, name='listado'),
     path ('api/eventos/', views.eventos_json, name='eventos_json'),
     path ('listado2/', views.listado2, name='listado2'),
+    path ('pizza/', views.pizza, name='pizza'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
  

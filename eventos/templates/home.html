@@ -6,6 +6,19 @@
     <h1>{{title}}</h1>
     <p>{{description}}</p>
 
+<div x-data="eventosHandler()" x-init="cargarEventos()">
+  <template x-if="cargando">
+    <p>Cargando eventos...</p>
+  </template>
+<input type="search" x-model="nombre" placeholder="Buscar evento" class="form-control mb-3">
+  <template x-if="!cargando">
+    <ul>
+      <template x-for="evento in eventosFiltrados" :key="evento.id">
+        <li x-text="evento.nombre"></li>
+      </template>
+    </ul>
+  </template>
+</div>
 
 <div class="container mt-3">
     <div class="row justify-content-between g-3">

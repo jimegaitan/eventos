@@ -199,3 +199,8 @@ def eventos_json(request):
 def listado2(request):
    
     return render(request, 'listado2.html')
+
+
+def pizza(request):
+    return render(request, 'pizza.html')
+
