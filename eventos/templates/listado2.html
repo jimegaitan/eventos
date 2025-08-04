@@ -7,11 +7,10 @@
   <template x-if="cargando">
     <p>Cargando eventos...</p>
   </template>
-  <!-- <input type="search" x-model="nombre" placeholder="Buscar evento..." class="form-control mb-3"> -->
-
+<input type="search" x-model="nombre" placeholder="Buscar evento" class="form-control mb-3">
   <template x-if="!cargando">
-      <ul>
-      <template x-for="evento in eventos" :key="evento.id">
+    <ul>
+      <template x-for="evento in eventosFiltrados" :key="evento.id">
         <li x-text="evento.nombre"></li>
       </template>
     </ul>
@@ -25,13 +24,20 @@
       cargando: true,
       nombre: '',
 
+       get eventosFiltrados() {
+        if (!this.nombre) return this.eventos;
+        return this.eventos.filter(evento =>
+          evento.nombre.toLowerCase().includes(this.nombre.toLowerCase())
+        );
+      },
+
       async cargarEventos() {
         try {
           const respuesta = await fetch('/api/eventos/');
           if (!respuesta.ok) throw new Error('Error al obtener los eventos');
 
-            this.eventos = await respuesta.json();
-            console.log(this.eventos);
+          this.eventos = await respuesta.json();
+          console.log(this.eventos);
         } catch (error) {
           console.error('Error en fetch:', error);
         } finally {

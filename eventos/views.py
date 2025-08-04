@@ -5,7 +5,6 @@ from django.contrib import messages
 from .forms import ContactoForm
 from django.http import JsonResponse
 
-
 # Create your views here.
 def home(request):
     # data= {
@@ -193,7 +192,7 @@ def listado(request):
 def eventos_json(request):
     listado_eventos = Evento.objects.all().order_by('fecha_inicio')
 
-    return JsonResponse({"Eventos": list(listado_eventos.values())}, safe=False)
+    return JsonResponse(list(listado_eventos.values()), safe=False)
 
 
 
