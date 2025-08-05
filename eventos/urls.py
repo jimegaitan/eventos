@@ -20,6 +20,7 @@ urlpatterns = [
     path ('listado2/', views.listado2, name='listado2'),
     path ('pizza/', views.pizza, name='pizza'),
     path ('listado3/', views.listado3, name='listado3'),
+    path ('listado4/', views.listado4, name='listado4'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
  
