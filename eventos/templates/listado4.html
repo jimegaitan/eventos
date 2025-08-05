@@ -1,54 +1,54 @@
 {% extends "layout/base.html" %}
 
 {% block content %}
-   
-
-    <div class="container mt-4 mb-4 text-center">
-      <!-- <div class="row">
-        <h1>{{ title }}</h1>
-      </div> -->
-      
-      <div class="card shadow  ">
-        <div class="card-header">
-          <h2>Listado de Eventos</h2>
-        </div>
-        <div class="card-body">
-          <table class="table">
-            <thead>
+<div class="container mt-4 mb-4 text-center" x-data="eventosHandler()" x-init="cargarEventos()">
+  <div class="card shadow">
+    <div class="card-header">
+      <h2>Listado de Eventos</h2>
+    </div>
+    <div class="card-body">
+      <template x-if="cargando">
+        <p>Cargando eventos...</p>
+      </template>
+      <template x-if="!cargando">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Nombre del evento</th>
+              <th scope="col">Fecha Inicio</th>
+              <th scope="col">Fecha Fin</th>
+              <th scope="col">Precio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template x-for="evento in eventos" :key="evento.id">
               <tr>
-                <th scope="col">Nombre del evento</th>
-                <th scope="col">Fecha Inicio</th>
-                <th scope="col">Fecha Fin</th>
-                <th scope="col">Precio</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for evento in ListadoEventos %}
-              <tr>
-
-                <td class="text-start ps-5">{{ evento.nombre }}</td>
-                <td>{{ evento.fecha_inicio|date:"d/m/Y" }}</td>
-                <td>{{ evento.fecha_fin|date:"d/m/Y" }}</td>
+                <td class="text-start ps-5" x-text="evento.nombre"></td>
+                <td x-text="evento.fecha_inicio | date:'d-m-Y'"></td>
+                <td x-text="evento.fecha_fin | date:'d-m-Y'"></td>
                 <td>
-                  {% if evento.precio == 0 %}
-                    <span class="badge bg-success">{{ evento.precio }}</span> 
-                  {% else %}
-                    <span class="badge bg-warning text-dark">{{ evento.precio }}</span>
-                  {% endif %}
-                </td>  
+                  <template x-if="evento.precio == 0">
+                    <span class="badge bg-success" x-text="evento.precio"></span>
+                  </template>
+                  <template x-if="evento.precio != 0">
+                    <span class="badge bg-warning text-dark" x-text="evento.precio"></span>
+                  </template>
+                </td>
               </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      
-      
-      </div>
+            </template>
+            <template x-if="eventos.length === 0">
+              <tr>
+                <td colspan="4">No hay eventos registrados.</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </template>
     </div>
-    </div>
+  </div>
+</div>
 
-
-    <script>
+<script>
   function eventosHandler() {
     return {
       eventos: [],
@@ -78,6 +78,4 @@
     }
   }
 </script>
-
-
 {% endblock %}
