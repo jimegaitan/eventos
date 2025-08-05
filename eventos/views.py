@@ -204,3 +204,8 @@ def listado2(request):
 def pizza(request):
     return render(request, 'pizza.html')
 
+
+def listado3(request):
+    # listado_eventos = Evento.objects.all().order_by('fecha_inicio')
+    return render(request, 'listado3.html')
+
