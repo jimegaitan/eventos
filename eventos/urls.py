@@ -21,6 +21,7 @@ urlpatterns = [
     path ('pizza/', views.pizza, name='pizza'),
     path ('listado3/', views.listado3, name='listado3'),
     path ('listado4/', views.listado4, name='listado4'),
+    path ('flecha/', views.flecha, name='flecha'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
  

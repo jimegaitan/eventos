@@ -213,3 +213,7 @@ def listado3(request):
 def listado4(request):
     # listado_eventos = Evento.objects.all().order_by('fecha_inicio')
     return render(request, 'listado4.html')
+
+def flecha(request):
+    # listado_eventos = Evento.objects.all().order_by('fecha_inicio')
+    return render(request, 'flecha.html')   
