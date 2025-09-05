@@ -2,8 +2,14 @@ from django.shortcuts import render
 from .models import Evento, Contacto
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
-from .forms import ContactoForm
+from .forms import ContactoForm, EventoForm
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt 
+import json
+from django.http import JsonResponse, HttpResponseNotAllowed
+
+
+
 
 # Create your views here.
 def home(request):
@@ -190,7 +196,7 @@ def listado(request):
 
 
 def eventos_json(request):
-    listado_eventos = Evento.objects.all().order_by('fecha_inicio')
+    listado_eventos = Evento.objects.all().order_by('nombre')
 
     return JsonResponse(list(listado_eventos.values()), safe=False)
 
@@ -217,3 +223,63 @@ def listado4(request):
 def flecha(request):
     # listado_eventos = Evento.objects.all().order_by('fecha_inicio')
     return render(request, 'flecha.html')   
+
+def evento2(request):
+    return render(request, 'evento2.html')
+
+
+
+
+
+
+
+@csrf_exempt
+def eventos_create(request):
+    """
+    POST /api/eventos/
+    Body JSON: {titulo, descripcion?, lugar?, inicio, fin, es_activo?}
+    """
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    try:
+        data = json.loads(request.body.decode('utf-8') or '{}')
+        print(data)
+    except json.JSONDecodeError:
+        return json_error("JSON inválido.")
+
+    form = EventoForm(data)
+    if form.is_valid():
+        ev = form.save()
+        return JsonResponse({"ok": True, "data": evento_to_dict(ev)}, status=201)
+    else:
+        return json_error("Datos inválidos.", extra={"fields": form.errors})   
+    
+
+
+
+
+     
+def json_error(message, status=400, extra=None):
+    payload = {"ok": False, "error": message}
+    if extra:
+        payload.update(extra)
+    return JsonResponse(payload, status=status)
+
+def evento_to_dict(ev):
+    return {
+        "id": ev.id,
+        "nombre": ev.nombre,
+        "precio": str(ev.precio),
+        "description": ev.description,
+        "fecha_asignacion": ev.fecha_asignacion.isoformat(),
+        "fecha_inicio": ev.fecha_inicio.isoformat(),
+        "fecha_fin": ev.fecha_fin.isoformat(),
+        "fecha_fin_asignacion": ev.fecha_fin_asignacion.isoformat(),
+        "diploma": ev.diploma,
+        "activo": ev.activo,
+        "created_at": ev.created_at.isoformat(),
+        "updated_at": ev.updated_at.isoformat(),
+        "image": ev.image.url if ev.image else None,
+    }
+

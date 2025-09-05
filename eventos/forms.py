@@ -1,5 +1,6 @@
 from django import forms
 from .models import Contacto
+from .models import Evento
 
 class ContactoForm(forms.ModelForm):
     class Meta:
@@ -18,3 +19,19 @@ class ContactoForm(forms.ModelForm):
             'correo': 'Correo Electrónico',
             'mensaje': 'Mensaje',
         }
+
+
+
+class EventoForm(forms.ModelForm):
+    class Meta:
+        model = Evento
+        fields = ['nombre','description','precio','fecha_inicio','fecha_fin','activo', 'fecha_asignacion', 'fecha_fin_asignacion', 'diploma']
+
+    # def clean(self):
+    #     cleaned = super().clean()
+    #     inicio = cleaned.get('fecha_inicio')
+    #     fin = cleaned.get('fecha_fin')
+    #     if inicio and fin and fin <= inicio:
+    #         raise forms.ValidationError("La fecha/hora de fin debe ser posterior a inicio.")
+    #     return cleaned
+    

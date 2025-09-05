@@ -6,43 +6,49 @@
 
   
   <!-- <h4>Nuevo Evento</h4> -->
-  <button @click="nuevo = !nuevo" class="btn btn-primary mb-3" mt-2>Agregar Evento
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
-  <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
-</svg>
-</button>
-  <div x-show="nuevo">
-    <h3>Nuevo Evento</h3>
-    <form @submit.prevent="guardarEvento">
-      <div class="mb-3">
-        <label for="nombre" class="form-label">Nombre</label>
-        <input type="text" id="nombre" x-model="nuevoEvento.nombre" class="form-control">
+   <!-- <div class="card"> -->
+    <button @click="nuevo = !nuevo" class="btn btn-primary mb-3" mt-2 x-show="!nuevo">Agregar Evento
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill"
+        viewBox="0 0 16 16">
+        <path
+          d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0" />
+      </svg>
+    </button>
+    
+    <div class="card-body">
+      <div x-show="nuevo">
+        <h3>Nuevo Evento</h3>
+        <form @submit.prevent="guardarEvento">
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" id="nombre" x-model="nuevoEvento.nombre" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="fecha_inicio" class="form-label">Fecha Inicio</label>
+            <input type="date" id="fecha_inicio" x-model="nuevoEvento.fecha_inicio" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="fecha_fin" class="form-label">Fecha Fin</label>
+            <input type="date" id="fecha_fin" x-model="nuevoEvento.fecha_fin" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="precio" class="form-label">Precio</label>
+            <input type="number" id="precio" x-model="nuevoEvento.precio" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="diploma" class="form-label">Diploma</label>
+            <select id="diploma" x-model="nuevoEvento.diploma" class="form-select">
+              <option value="1">Sí</option>
+              <option value="0">No</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" @click="guardarEvento">Guardar Evento</button>
+          <button type="button" class="btn btn-secondary" @click="nuevo = false">Cancelar</button>
+        </form>
       </div>
-      <div class="mb-3">
-        <label for="fecha_inicio" class="form-label">Fecha Inicio</label>
-        <input type="date" id="fecha_inicio" x-model="nuevoEvento.fecha_inicio" class="form-control">
-      </div>
-      <div class="mb-3">
-        <label for="fecha_fin" class="form-label">Fecha Fin</label>
-        <input type="date" id="fecha_fin" x-model="nuevoEvento.fecha_fin" class="form-control">
-      </div>
-      <div class="mb-3">
-        <label for="precio" class="form-label">Precio</label>
-        <input type="number" id="precio" x-model="nuevoEvento.precio" class="form-control">
-      </div>
-      <div class="mb-3">
-        <label for="diploma" class="form-label">Diploma</label>
-        <select id="diploma" x-model="nuevoEvento.diploma" class="form-select">
-          <option value="1">Sí</option>
-          <option value="0">No</option>
-        </select>
-      </div>
-      <button type="submit" class="btn btn-primary">Guardar Evento</button>
-      <button type="button" class="btn btn-secondary" @click="nuevo = false">Cancelar</button>
-    </form>
-  </div>
+    </div>
   
-
+  
 
 
 
@@ -105,10 +111,10 @@
                     </template>
                     <template x-if="!evento.diploma">
                       <span class="text-danger">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                          class="bi bi-ban-fill" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill"
+                          viewBox="0 0 16 16">
                           <path
-                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M2.71 12.584q.328.378.706.707l9.875-9.875a7 7 0 0 0-.707-.707l-9.875 9.875Z" />
+                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
                         </svg>
                       </span>
                     </template>
@@ -145,16 +151,24 @@
         </template>
 
         <div class="d-flex mt-4">
-          <select class="form-select" aria-label="Default select example" style="width: auto; margin: 20px auto;"
+          <select class="form-select" aria-label="Default select example" style="width: auto; margin: 20px ;"
             x-model="filas" @change="calcularPaginas()">
             <template x-for="opcion in listaDePaginas" :key="opcion">
               <option :value="opcion" x-text="opcion"></option>
             </template>
           </select>
 
+<!-- 
+<footer id="">
+  < class="copyright">
+          &copy; 2025 Mi Página HTML Mejorada
+  </ >
+</footer>
+ -->
 
-          
-          <nav aria-label="Page navigation example">
+
+
+          <nav aria-label="Page navigation example" style="width: auto; margin: auto; text-align: center;">
             <ul class="pagination">
               <li class="page-item">
                 <a class="page-link" href="#" aria-label="Previous">

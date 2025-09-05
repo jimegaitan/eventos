@@ -1,0 +1,119 @@
+{% extends "layout/base.html" %}
+{% block content %}
+
+<div class="card shadow-lg w-75 mx-auto mt-2" x-data="eventoForm()">
+    <div class="card-header">
+        <h3 class="text-center" style="color: #007bff;">Configuración de Eventos</h3>
+    </div>
+    <div class="card-body">
+        <template x-if="mensaje">
+            <div :class="{'alert alert-success': exito, 'alert alert-danger': !exito}" x-text="mensaje"></div>
+        </template>
+        <form @submit.prevent="enviarEvento" enctype="multipart/form-data" novalidate>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre del evento</label>
+                <input type="text" class="form-control" id="nombre" x-model="form.nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="precio" class="form-label">Precio del evento</label>
+                <input type="number" class="form-control" id="precio" x-model="form.precio" required>
+            </div>
+            <div class="mb-3">
+                <label for="fecha_inicio" class="form-label">Fecha Inicio del evento</label>
+                <input type="date" class="form-control" id="fecha_inicio" x-model="form.fecha_inicio" required>
+            </div>
+            <div class="mb-3">
+                <label for="fecha_fin" class="form-label">Fecha Fin del evento</label>
+                <input type="date" class="form-control" id="fecha_fin" x-model="form.fecha_fin" required>
+            </div>
+            <div class="mb-3">
+                <label for="fecha_asignacion" class="form-label">Fecha Inicio Asignación</label>
+                <input type="date" class="form-control" id="fecha_asignacion" x-model="form.fecha_asignacion" required>
+            </div>
+            <div class="mb-3">
+                <label for="fecha_fin_asignacion" class="form-label">Fecha Fin Asignación</label>
+                <input type="date" class="form-control" id="fecha_fin_asignacion" x-model="form.fecha_fin_asignacion" required>
+            </div>
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <textarea class="form-control" id="descripcion" x-model="form.descripcion" rows="4" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Imagen del evento</label>
+                <input type="file" class="form-control" id="image" @change="onFileChange">
+            </div>
+            <button type="submit" class="btn btn-primary" :disabled="cargando">Publicar</button>
+            <button type="reset" class="btn btn-secondary" @click="resetForm">Cancelar</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function eventoForm() {
+    return {
+        form: {
+            nombre: '',
+            precio: '',
+            fecha_inicio: '',
+            fecha_fin: '',
+            fecha_asignacion: '',
+            fecha_fin_asignacion: '',
+            descripcion: '',
+            image: null,
+        },
+        mensaje: '',
+        exito: false,
+        cargando: false,
+        onFileChange(e) {
+            this.form.image = e.target.files[0];
+        },
+        resetForm() {
+            this.form = {
+                nombre: '',
+                precio: '',
+                fecha_inicio: '',
+                fecha_fin: '',
+                fecha_asignacion: '',
+                fecha_fin_asignacion: '',
+                descripcion: '',
+                image: null,
+            };
+            this.mensaje = '';
+            this.exito = false;
+        },
+        async enviarEvento() {
+            this.cargando = true;
+            this.mensaje = '';
+            this.exito = false;
+            const formData = new FormData();
+            for (const key in this.form) {
+                if (this.form[key] !== null) {
+                    formData.append(key, this.form[key]);
+                }
+            }
+            try {
+                const response = await fetch('/api/eventos/', { // Cambia esta URL por tu endpoint real
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: formData
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    this.mensaje = 'Evento publicado correctamente.';
+                    this.exito = true;
+                    this.resetForm();
+                } else {
+                    this.mensaje = data.error || 'Error al publicar el evento.';
+                }
+            } catch (error) {
+                this.mensaje = 'Error de conexión con el servidor.';
+            } finally {
+                this.cargando = false;
+            }
+        }
+    }
+}
+</script>
+{% endblock %}
